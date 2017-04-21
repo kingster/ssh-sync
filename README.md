@@ -8,7 +8,7 @@ to backup and restore ssh key files.
 Fist install the LastPass command line client (`lpass`) from a `lastpass-cli`
 package:
 
-	brew install lastpass-cli
+	brew install lastpass-cli --with-pinentry
 
 Next install this package. 
 	
