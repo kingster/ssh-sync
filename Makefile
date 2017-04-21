@@ -1,7 +1,10 @@
-sshsync: sync.sh
-   
-install:
-	cp sync.sh  /usr/local/bin/sshsync
+default: build
 
-purge: 
-	rm /usr/local/bin/sshsync
+build:
+	go build -o bin/ssh-sync-keys sync.go
+
+install:
+	cp bin/ssh-sync-keys  /usr/local/bin/ssh-sync-keys
+
+purge:
+	rm /usr/local/bin/ssh-sync-keys

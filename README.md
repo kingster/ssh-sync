@@ -1,6 +1,6 @@
 # SSH key(s) management with LastPass 
  
-This repository has a tool called `sshsync` which uses LastPass (secure notes)
+This repository provides the tool called `ssh-sync-keys` which uses LastPass (secure notes)
 to backup and restore ssh key files. 
 
 ## How to install
@@ -19,7 +19,7 @@ Next install this package.
 
 Run:
 
-	sshsync
+	ssh-sync-keys
 
 It will sync the ~/.ssh folder with  "Secure Notes/SSH" folder.
 
