@@ -68,10 +68,13 @@ func main() {
 				if err != nil {
 					panic(err)
 				}
-
-				if (modTime > unixMilli(info.ModTime())) {
+				localModTime := unixMilli(info.ModTime())
+				if (modTime > localModTime) {
 					log.Println("[INFO] Downloading Updated File :", name, "was modified at", modTime)
-					download(upStreamId[name], fName)
+					download(upStreamId[name], fName, upStreamMod[name])
+				} else if (localModTime > modTime ) {
+					log.Println("[INFO] Upload Updated File :", name, "was modified at", unixMilli(info.ModTime()))
+					upload(name, fName)
 				} else {
 					log.Println("[DEBUG] No Change File :", name)
 				}
@@ -88,13 +91,13 @@ func main() {
 	for name, id := range upStreamId {
 		log.Println("[INFO]  Downloading New File :", name)
 		fName := usr.HomeDir + "/.ssh/" + name
-		download(id, fName)
+		download(id, fName,upStreamMod[name])
 	}
 
 	sync()
 }
 
-func download(id string, path string) {
+func download(id string, path string, updatedAt int64) {
 
 	uploadCmd := exec.Command("lpass", "show", id, "--notes")
 	uploadOut, _ := uploadCmd.StdoutPipe()
@@ -110,6 +113,14 @@ func download(id string, path string) {
 	if err != nil {
 		panic(err)
 	}
+
+	modTime := time.Unix(0, updatedAt * int64(time.Millisecond))
+	touchCmd := exec.Command("touch", "-t", modTime.Format("200601021504"), path)
+	_, err = touchCmd.Output()
+	if err != nil {
+		panic(err)
+	}
+	
 
 }
 
