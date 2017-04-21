@@ -20,7 +20,7 @@ func main() {
 		panic(lookErr)
 	}
 
-	log.Println("LastPass SSH Sync...")
+	log.Println("[INFO] LastPass SSH Sync...")
 	sync()
 
 	lsCmd := exec.Command("lpass", "ls", "--color=never", "--long", "Secure Notes\\SSH")
@@ -60,7 +60,7 @@ func main() {
 	for _, f := range files {
 		name := f.Name()
 		if !contains(excludedFiles, name) {
-			log.Println("Processing Folder File", name)
+			log.Println("[DEBUG] Processing Folder File", name)
 			fName := usr.HomeDir + "/.ssh/" + f.Name()
 			modTime, exists := upStreamMod[name]
 			if (exists) {
@@ -70,14 +70,14 @@ func main() {
 				}
 
 				if (modTime > unixMilli(info.ModTime())) {
-					log.Println("Downloading Updated File :", name, "was modified at", modTime)
+					log.Println("[INFO] Downloading Updated File :", name, "was modified at", modTime)
 					download(upStreamId[name], fName)
 				} else {
-					log.Println("No Change File :", name)
+					log.Println("[DEBUG] No Change File :", name)
 				}
 
 			} else {
-				log.Println("Uploading New File :", name)
+				log.Println("[INFO] Uploading New File :", name)
 				upload(name, fName)
 			}
 			delete(upStreamId, name)
@@ -86,7 +86,7 @@ func main() {
 	}
 
 	for name, id := range upStreamId {
-		log.Println("Downloading New File :", name)
+		log.Println("[INFO]  Downloading New File :", name)
 		fName := usr.HomeDir + "/.ssh/" + name
 		download(id, fName)
 	}
@@ -134,7 +134,7 @@ func upload(name string, path string) {
 }
 
 func sync()  {
-	log.Println("Running Sync...")
+	log.Println("[INFO] Running Sync...")
 	lsCmd := exec.Command("lpass", "sync")
 	_, err := lsCmd.Output()
 	if err != nil {
