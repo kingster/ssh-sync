@@ -15,14 +15,18 @@ to backup and restore ssh key files.
 
 	```
 	git clone https://github.com/kingster/ssh-sync.git
+	make
 	make install
 	```
 
 ## How to use
 
 Run:
+
 	lpass login <your-email-address>
 	ssh-sync-keys
+	
+	 
 
 It will sync the ~/.ssh folder with  "Secure Notes/SSH" folder.
 
